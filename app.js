@@ -5,14 +5,15 @@ let searchClick = async() => {
     const url = `https://api.lyrics.ovh/suggest/${searchValue}`;
 
     // load data:
-    // fetch(url)
-    //     .then(response => response.json())
-    //     .then(data => {
-    //         songDisplay(data.data);
-    //  })
-    let response = await fetch(url);
-    let data = await response.json();
-    songDisplay(data.data);
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            songDisplay(data.data);
+        })
+        .catch(error => displayError("Something is wrong"))
+    // let response = await fetch(url);
+    // let data = await response.json();
+    // songDisplay(data.data);
 }
  
 let songDisplay = (song) => {
@@ -52,9 +53,16 @@ let getLyrics = async (artist, title) => {
     //     .then(data => {
     //         showLyric(data.lyrics);
     // })
-    let response = await fetch(url);
-    let data = await response.json();
-    showLyric(data.lyrics);
+   try {
+           let response = await fetch(url);
+		let data = await response.json();
+		showLyric(data.lyrics);
+   } catch (error) {
+       displayError('Wrong')
+   }
+
+
+
 }
 
 let showLyric = data => {
@@ -62,4 +70,10 @@ let showLyric = data => {
     lyricsDiv.innerText = data;
 
     // console.log(data);
+}
+
+
+
+let displayError = (msg) => {
+    document.getElementById('error').innerText = msg;
 }
